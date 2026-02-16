@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using var db = new SchoolContext();
+using var db = new SchoolDbContext();
 
 while (true)
 {
@@ -11,7 +11,9 @@ while (true)
     Console.WriteLine("[V]isa studenter och kurser");
     Console.WriteLine("[A]vsluta");
     Console.Write("Val: ");
+
     var answer = Console.ReadLine()!.ToLower();
+
     if (answer == "s")
     {
         AddStudent(db);
@@ -23,7 +25,7 @@ while (true)
     }
     else if (answer == "l")
     {
-        Enrollstudent(db);
+        EnrollStudent(db);
     }
     else if (answer == "v")
     {
@@ -35,7 +37,7 @@ while (true)
     }
 }
 
-static void AddStudent(SchoolContext db)
+static void AddStudent(SchoolDbContext db)
 {
     Console.WriteLine("Ange studentens namn:");
     var name = Console.ReadLine();
@@ -47,7 +49,7 @@ static void AddStudent(SchoolContext db)
     Console.ResetColor();
 }
 
-static void AddCourse(SchoolContext db)
+static void AddCourse(SchoolDbContext db)
 {
     Console.WriteLine("Ange kursens namn:");
     var title = Console.ReadLine();
@@ -59,7 +61,7 @@ static void AddCourse(SchoolContext db)
     Console.ResetColor();
 }
 
-static void Enrollstudent(SchoolContext db)
+static void EnrollStudent(SchoolDbContext db)
 {
     Console.WriteLine("Ange studentens id:");
     var studentId = int.Parse(Console.ReadLine()!);
@@ -81,7 +83,7 @@ static void Enrollstudent(SchoolContext db)
     Console.ResetColor();
 }
 
-static void ListStudentsAndCourses(SchoolContext db)
+static void ListStudentsAndCourses(SchoolDbContext db)
 {
     Console.WriteLine("STUDENTER:");
     foreach (var s in db.Students.Include(s => s.Courses))

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-public class SchoolContext : DbContext
+public class SchoolDbContext : DbContext
 {
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
