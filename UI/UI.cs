@@ -1,4 +1,4 @@
-using SchoolApp.Core;
+using SchoolApp.Core.Services;
 
 namespace SchoolApp.UI;
 

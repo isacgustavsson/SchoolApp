@@ -1,10 +1,12 @@
 using SchoolApp.Core.Entities;
+using SchoolApp.Core.Interfaces;
 
-namespace SchoolApp.Core;
 
-public class SchoolService(SchoolDbContext db)
+namespace SchoolApp.Core.Services;
+
+public class SchoolService(IRepository repo)
 {
-    private readonly SchoolDbContext _db = db;
+    private readonly IRepository _repo = repo;
 
     public List<Student> GetAllStudents()
     { }
