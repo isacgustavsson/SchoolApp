@@ -1,4 +1,5 @@
 using SchoolApp.Core.Services;
+using SchoolApp.Core.Entities;
 
 namespace SchoolApp.UI;
 
@@ -28,7 +29,6 @@ public class UI(SchoolService service)
             if (answer == "s")
             {
                 AddStudent(_service);
-
             }
             else if (answer == "k")
             {
@@ -52,11 +52,9 @@ public class UI(SchoolService service)
     static void AddStudent(SchoolService _service)
     {
         Console.WriteLine("Ange studentens namn:");
-        var name = Console.ReadLine();
-        var student = new Student { Name = name };
+        string? name = Console.ReadLine();
 
-        _service.Students.Add(student);
-        _service.SaveChanges();
+        _service.AddStudent(name);
 
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"Studenten {name} tillagd.");
@@ -66,11 +64,9 @@ public class UI(SchoolService service)
     static void AddCourse(SchoolService _service)
     {
         Console.WriteLine("Ange kursens namn:");
-        var title = Console.ReadLine();
-        var course = new Course { Title = title };
+        string? title = Console.ReadLine();
 
-        _service.Courses.Add(course);
-        _service.SaveChanges();
+        _service.AddCourse(title);
 
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"Kursen {title} tillagd.");
@@ -84,28 +80,20 @@ public class UI(SchoolService service)
         Console.WriteLine("Ange kursens id:");
         var courseId = int.Parse(Console.ReadLine()!);
 
-        var student = _service.Students.Find(studentId);
-        var course = _service.Courses.Where(c => c.CourseId == courseId).Include(c => c.Students).FirstOrDefault();
+        _service.HandleEnrollment(studentId, courseId);
 
-        bool success = HandleEnrollmentErrors(student, course);
-        if (!success)
-        {
-            return;
-        }
-
-        course!.Students.Add(student!);
-        _service.SaveChanges();
-
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine($"Studenten {student!.Name} tillagd i kursen {course.Title}.");
-        Console.ResetColor();
+        // Console.ForegroundColor = ConsoleColor.Green;
+        // Console.WriteLine($"Studenten {student!.Name} tillagd i kursen {course!.Title}.");
+        // Console.ResetColor();
     }
 
     static void ListStudentsAndCourses(SchoolService _service)
     {
         Console.WriteLine("STUDENTER:");
 
-        foreach (var s in _service.Students.Include(s => s.Courses))
+        var students = _service.GetAllStudents();
+
+        foreach (var s in students)
         {
             Console.Write($"\nID {s.StudentId}: {s.Name} ");
             foreach (var c in s.Courses)
@@ -115,33 +103,12 @@ public class UI(SchoolService service)
         }
 
         Console.WriteLine("\nKURSER:");
-        foreach (var c in _service.Courses.Include(c => c.Students))
+
+        var courses = _service.GetAllCourses();
+
+        foreach (var c in courses)
         {
             Console.WriteLine($"ID {c.CourseId}: {c.Title}");
         }
     }
-
-    static bool HandleEnrollmentErrors(Student? student, Course? course)
-    {
-        bool success = true;
-        Console.ForegroundColor = ConsoleColor.Red;
-        if (student == null || course == null)
-        {
-            Console.WriteLine("Student eller kurs hittades inte.");
-            success = false;
-        }
-        else if (course.Students.Contains(student))
-        {
-            Console.WriteLine("Studenten är redan inskriven i kursen.");
-            success = false;
-        }
-        else if (course.Students.Count >= 30)
-        {
-            Console.WriteLine("Kursen är full.");
-            success = false;
-        }
-        Console.ResetColor();
-        return success;
-    }
-
 }
