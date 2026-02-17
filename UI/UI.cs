@@ -1,3 +1,5 @@
+using SchoolApp.Core;
+
 namespace SchoolApp.UI;
 
 public class UI(SchoolService service)

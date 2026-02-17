@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SchoolApp.Core.Entities;
 
 namespace SchoolApp.Infrastructure;
 

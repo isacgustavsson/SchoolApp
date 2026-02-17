@@ -1,3 +1,5 @@
+using SchoolApp.Core.Entities;
+
 namespace SchoolApp.Core;
 
 public class SchoolService(SchoolDbContext db)
