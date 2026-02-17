@@ -1,3 +1,5 @@
+namespace SchoolApp.Core;
+
 public class SchoolService(SchoolDbContext db)
 {
     private readonly SchoolDbContext _db = db;

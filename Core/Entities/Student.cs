@@ -1,3 +1,4 @@
+namespace SchoolApp.Core.Entities;
 
 public class Student
 {
@@ -7,4 +8,3 @@ public class Student
     // Navigation property for many-to-many relationship with courses
     public List<Course> Courses { get; set; } = new List<Course>();
 }
-

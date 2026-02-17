@@ -1,3 +1,4 @@
+namespace SchoolApp.Core.Entities;
 
 public class Course
 {

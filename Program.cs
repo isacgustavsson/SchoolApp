@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SchoolApp.UI;
+using SchoolApp.Core;
+using SchoolApp.Infrastructure;
 
 using var db = new SchoolDbContext();
 

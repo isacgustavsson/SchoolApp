@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
+namespace SchoolApp.Infrastructure;
+
 public class SchoolDbContext : DbContext
 {
     public DbSet<Student> Students { get; set; }

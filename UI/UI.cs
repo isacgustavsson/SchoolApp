@@ -1,3 +1,5 @@
+namespace SchoolApp.UI;
+
 public class UI(SchoolService service)
 {
     private readonly SchoolService _service = service;
