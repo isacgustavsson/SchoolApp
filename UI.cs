@@ -23,20 +23,20 @@ public class UI(SchoolService service)
 
             if (answer == "s")
             {
-                AddStudent(db);
+                AddStudent(_service);
 
             }
             else if (answer == "k")
             {
-                AddCourse(db);
+                AddCourse(_service);
             }
             else if (answer == "l")
             {
-                EnrollStudent(db);
+                EnrollStudent(_service);
             }
             else if (answer == "v")
             {
-                ListStudentsAndCourses(db);
+                ListStudentsAndCourses(_service);
             }
             else if (answer == "a")
             {
@@ -45,38 +45,43 @@ public class UI(SchoolService service)
         }
     }
 
-    static void AddStudent(SchoolDbContext db)
+    static void AddStudent(SchoolService _service)
     {
         Console.WriteLine("Ange studentens namn:");
         var name = Console.ReadLine();
         var student = new Student { Name = name };
-        db.Students.Add(student);
-        db.SaveChanges();
+
+        _service.Students.Add(student);
+        _service.SaveChanges();
+
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"Studenten {name} tillagd.");
         Console.ResetColor();
     }
 
-    static void AddCourse(SchoolDbContext db)
+    static void AddCourse(SchoolService _service)
     {
         Console.WriteLine("Ange kursens namn:");
         var title = Console.ReadLine();
         var course = new Course { Title = title };
-        db.Courses.Add(course);
-        db.SaveChanges();
+
+        _service.Courses.Add(course);
+        _service.SaveChanges();
+
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"Kursen {title} tillagd.");
         Console.ResetColor();
     }
 
-    static void EnrollStudent(SchoolDbContext db)
+    static void EnrollStudent(SchoolService _service)
     {
         Console.WriteLine("Ange studentens id:");
         var studentId = int.Parse(Console.ReadLine()!);
         Console.WriteLine("Ange kursens id:");
         var courseId = int.Parse(Console.ReadLine()!);
-        var student = db.Students.Find(studentId);
-        var course = db.Courses.Where(c => c.CourseId == courseId).Include(c => c.Students).FirstOrDefault();
+
+        var student = _service.Students.Find(studentId);
+        var course = _service.Courses.Where(c => c.CourseId == courseId).Include(c => c.Students).FirstOrDefault();
 
         bool success = HandleEnrollmentErrors(student, course);
         if (!success)
@@ -85,16 +90,18 @@ public class UI(SchoolService service)
         }
 
         course!.Students.Add(student!);
-        db.SaveChanges();
+        _service.SaveChanges();
+
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"Studenten {student!.Name} tillagd i kursen {course.Title}.");
         Console.ResetColor();
     }
 
-    static void ListStudentsAndCourses(SchoolDbContext db)
+    static void ListStudentsAndCourses(SchoolService _service)
     {
         Console.WriteLine("STUDENTER:");
-        foreach (var s in db.Students.Include(s => s.Courses))
+
+        foreach (var s in _service.Students.Include(s => s.Courses))
         {
             Console.Write($"\nID {s.StudentId}: {s.Name} ");
             foreach (var c in s.Courses)
@@ -104,7 +111,7 @@ public class UI(SchoolService service)
         }
 
         Console.WriteLine("\nKURSER:");
-        foreach (var c in db.Courses.Include(c => c.Students))
+        foreach (var c in _service.Courses.Include(c => c.Students))
         {
             Console.WriteLine($"ID {c.CourseId}: {c.Title}");
         }
