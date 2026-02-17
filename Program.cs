@@ -2,5 +2,7 @@
 
 using var db = new SchoolDbContext();
 
-UI schoolUI = new();
+SchoolService service = new();
+UI schoolUI = new(service);
+
 schoolUI.Run();
