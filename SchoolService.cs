@@ -1,6 +1,6 @@
 public class SchoolService(SchoolDbContext db)
 {
-    private readonly SchoolServiceDbContext _db = db;
+    private readonly SchoolDbContext _db = db;
 
     public List<Student> GetAllStudents()
     { }
